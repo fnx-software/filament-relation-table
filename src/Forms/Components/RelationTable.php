@@ -1,111 +1,42 @@
 <?php
 
-declare(strict_types=1);
-
 namespace FnxSoftware\FilamentRelationTable\Forms\Components;
 
-use Closure;
 use Filament\Forms\Components\Field;
+use Filament\Tables\Columns\Column;
+use FnxSoftware\FilamentRelationTable\Concerns\HasRelationTableActions;
+use FnxSoftware\FilamentRelationTable\Concerns\HasRelationTableColumns;
+use FnxSoftware\FilamentRelationTable\Concerns\HasRelationTableFilters;
+use FnxSoftware\FilamentRelationTable\Concerns\HasRelationTableSchema;
+use FnxSoftware\FilamentRelationTable\Concerns\InteractsWithRelationTableState;
 
 class RelationTable extends Field
 {
-    protected string $view = 'filament-relation-table::forms.components.relation-table';
+    use HasRelationTableActions;
+    use HasRelationTableColumns;
+    use HasRelationTableFilters;
+    use HasRelationTableSchema;
+    use InteractsWithRelationTableState;
 
-    protected string|Closure|null $relationshipName = null;
+    protected string $view = 'fnx-relation-table::forms.components.relation-table';
 
-    protected array|Closure $schema = [];
-
-    protected ?array $columns = [];
-
-    protected array|Closure $filters = [];
-
-    protected array|Closure $headerActions = [];
-
-    protected array $actions = [];
-
-    protected array|bool|Closure $pagination = [10, 25, 50];
-
-    public function relationship(string|Closure $name): static
+    /**
+     * Overrides columns to dynamically detect if table columns or grid layout columns are provided.
+     * Matches the signature of Filament\Schemas\Components\Component::columns exactly to comply with PHP strict standards.
+     */
+    public function columns(\Closure|array|int|null $columns = 2): static
     {
-        $this->relationshipName = $name;
+        if (is_array($columns) && collect($columns)->first() instanceof Column) {
+            return $this->tableColumns($columns);
+        }
 
-        return $this;
+        return parent::columns($columns);
     }
 
-    public function schema(array|Closure $schema): static
+    protected function setUp(): void
     {
-        $this->schema = $schema;
+        parent::setUp();
 
-        return $this;
-    }
-
-    public function columns(array|Closure $columns): static
-    {
-        $this->columns = $columns;
-
-        return $this;
-    }
-
-    public function filters(array|Closure $filters): static
-    {
-        $this->filters = $filters;
-
-        return $this;
-    }
-
-    public function headerActions(array|Closure $actions): static
-    {
-        $this->headerActions = $actions;
-
-        return $this;
-    }
-
-    public function actions(array|Closure $actions): static
-    {
-        $this->actions = $actions;
-
-        return $this;
-    }
-
-    public function paginated(array|bool|Closure $pagination): static
-    {
-        $this->pagination = $pagination;
-
-        return $this;
-    }
-
-    public function getRelationshipName(): ?string
-    {
-        return $this->evaluate($this->relationshipName);
-    }
-
-    public function getModalSchema(): array
-    {
-        return $this->evaluate($this->schema);
-    }
-
-    public function getTableColumns(): array
-    {
-        return $this->evaluate($this->columns);
-    }
-
-    public function getTableFilters(): array
-    {
-        return $this->evaluate($this->filters);
-    }
-
-    public function getHeaderActions(): array
-    {
-        return $this->evaluate($this->headerActions);
-    }
-
-    public function getRecordActions(): array
-    {
-        return $this->evaluate($this->actions);
-    }
-
-    public function getPagination(): array|bool
-    {
-        return $this->evaluate($this->pagination);
+        $this->columnSpanFull();
     }
 }

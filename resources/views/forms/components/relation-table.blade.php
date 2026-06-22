@@ -2,10 +2,16 @@
     :component="$getFieldWrapperView()"
     :field="$field"
 >
-    <livewire:filament-relation-table
-        :state-path="$getStatePath()"
-        :field-key="$getKey()"
-        :parent-livewire-id="$this->getId()"
-        wire:key="{{ $getKey() }}.relation-table"
-    />
+    <div
+        {{
+            $attributes
+                ->merge($getExtraAttributes(), escape: false)
+                ->class(['fnx-relation-table'])
+        }}
+    >
+        {{-- First version placeholder. --}}
+        <div class="fnx-relation-table-placeholder">
+            RelationTable field loaded: {{ $getStatePath() }}
+        </div>
+    </div>
 </x-dynamic-component>
