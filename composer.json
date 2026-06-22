@@ -1,0 +1,54 @@
+{
+    "name": "fnx-software/filament-relation-table",
+    "description": "Filament field component for managing unsaved relationship rows with a Filament table UI.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "filament",
+        "laravel",
+        "repeater",
+        "modal",
+        "table",
+        "form"
+    ],
+    "authors": [
+        {
+            "name": "Yousef Aman"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "FnxSoftware\\FilamentRelationTable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FnxSoftware\\FilamentRelationTable\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FnxSoftware\\FilamentRelationTable\\FilamentRelationTableServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2|8.4",
+        "filament/filament": "^4.0 || ^5.0",
+        "livewire/livewire": "^4.0",
+        "spatie/laravel-package-tools": "^1.92"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-livewire": "^4.0"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
