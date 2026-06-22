@@ -15,7 +15,7 @@ class RelationTable extends Field
 
     protected array|Closure $schema = [];
 
-    protected ?array $columns = [];
+    protected array|Closure $tableColumns = [];
 
     protected array|Closure $filters = [];
 
@@ -32,16 +32,16 @@ class RelationTable extends Field
         return $this;
     }
 
-    public function schema(array|Closure $schema): static
+    public function schema(array|Closure $components): static
     {
-        $this->schema = $schema;
+        $this->schema = $components;
 
         return $this;
     }
 
-    public function columns(array|Closure $columns): static
+    public function tableColumns(array|Closure $columns): static
     {
-        $this->columns = $columns;
+        $this->tableColumns = $columns;
 
         return $this;
     }
@@ -79,14 +79,14 @@ class RelationTable extends Field
         return $this->evaluate($this->relationshipName);
     }
 
-    public function getModalSchema(): array
+    public function getRelationSchema(): array
     {
         return $this->evaluate($this->schema);
     }
 
     public function getTableColumns(): array
     {
-        return $this->evaluate($this->columns);
+        return $this->evaluate($this->tableColumns);
     }
 
     public function getTableFilters(): array
